@@ -4,6 +4,7 @@ let arrayOfSizes = [
     { 'symbol': 'M', 'value': '100px' },
     { 'symbol': 'L', 'value': '200px' }
 ];
+let iterator = 0;
 
 let randColor = (numberOfColors) => {
     for (let i = 0; i < numberOfColors; i++) {
@@ -54,9 +55,13 @@ let DivObject = () => {
 }
 
 let Calculate = () => {
-    let distance = Math.abs(Number(prompt('Input disatnce between cells', '')));
+    let distance = 200;
     let divs = document.getElementsByClassName("panel");
-    for (let i of divs) {
+    let i = divs[iterator];
+
+    console.log('Current cell: ', i);
+
+    if (iterator < divs.length) {
         for (let j of divs) {
             if (i == j) {
                 continue;
@@ -136,19 +141,25 @@ let Calculate = () => {
                     let numberI = arrayOfColors.find(e => e.color === i.style.backgroundColor).number;
                     let numberJ = arrayOfColors.find(e => e.color === j.style.backgroundColor).number;
                     if (numberI + 1 == numberJ) {
+                        console.log('**********');
+                        console.log('Changed cell:', i, 'color: ', i.style.backgroundColor);
+                        console.log('Cell that initiated', j, 'color', j.style.backgroundColor);
+
                         i.style.backgroundColor = j.style.backgroundColor;
                         i.textContent = numberJ;
                     }
                 }
             }
         }
+        iterator++;
     }
+
 }
 
 let getAverageRGB = () => {
     let imgEl = document.getElementById('i');
     let blockSize = 5;
-    let defaultRGB = { r: 0, g: 0, b: 0 }; 
+    let defaultRGB = { r: 0, g: 0, b: 0 };
     let canvas = document.createElement('canvas');
     let context = canvas.getContext('2d');
     let data;
@@ -204,7 +215,7 @@ let imageToBase64 = () => {
     }
     convert();
 }
-const getAverage = () => {
+let getAverage = () => {
     let rgb = getAverageRGB();
     document.body.style.backgroundImage = null;
     document.body.style.backgroundColor = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
